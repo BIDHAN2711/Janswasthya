@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Hospital Bed Reservation & Hospitals Info</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+  <style>
+    /* Custom scrollbar for timeline and flowchart details */
+    .scrollbar-thin::-webkit-scrollbar {
+      width: 6px;
+    }
+    .scrollbar-thin::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    .scrollbar-thin::-webkit-scrollbar-thumb {
+      background-color: #06b6d4;
+      border-radius: 3px;
+    }
+    /* Timeline vertical line styling */
+    .timeline-line {
+      width: 4px;
+      background: linear-gradient(180deg, #06b6d4, #0e7490);
+    }
+    /* Hospital card transitions */
+    .card {
+      transition: transform 0.3s ease, box-shadow 0.3s ease, opacity 0.3s ease;
+    }
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    }
+    .card.hidden {
+      opacity: 0;
+      pointer-events: none;
+      transform: scale(0.95);
+      transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+    /* Navigation button active style */
+    .nav-btn.active {
+      background-color: #00c4cc;
+      color: white;
+      box-shadow: 0 0 10px #00e9ff;
+    }
+  </style>
+</head>
+<body class="bg-gradient-to-br from-cyan-50 to-blue-100 text-slate-900 min-h-screen flex flex-col">
+
+  <!-- Header / Navigation -->
+  <header class="sticky top-0 z-50 bg-gradient-to-r from-cyan-600 to-blue-600 shadow-lg rounded-b-2xl select-none p-4 flex flex-wrap items-center gap-4 justify-between text-white">
+    <a href="#" aria-label="Hospital Bed Reservation Home" class="flex items-center gap-3 shrink-0 font-semibold text-xl md:text-2xl">
+      <img src="logo.jpeg" class="h-20 w-30 rounded-xl shadow-lg object-contain bg-white" />
+      Janswathya
+    </a>
+    <nav role="navigation" aria-label="Main menu" class="flex gap-3 flex-wrap shrink-0">
+      <button id="navReserveBed" aria-controls="sectionReserveBed" aria-selected="true" class="nav-btn px-4 py-2 rounded-full font-semibold bg-white text-cyan-600 shadow-md transition hover:scale-105 hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-cyan-300">Reserve Bed</button>
+      <button id="navPatientHistory" aria-controls="sectionPatientHistory" aria-selected="false" class="nav-btn px-4 py-2 rounded-full font-semibold hover:bg-white hover:text-cyan-600 transition focus:outline-none focus:ring-4 focus:ring-cyan-300">Patient History</button>
+      <a href="index.html" id="navHospitalsSection" aria-controls="sectionHospitalsSection" aria-selected="false" class="nav-btn px-4 py-2 rounded-full font-semibold hover:bg-white hover:text-cyan-600 transition focus:outline-none focus:ring-4 focus:ring-cyan-300"">Hospitals</a>
+    </nav>
+
+    <div id="patientSearchContainer" aria-label="Search patient by ID" class="relative ml-auto max-w-xs w-full md:w-auto flex-shrink-1 hidden">
+      <input id="patientSearchInput" type="text" placeholder="Search by Patient ID" aria-describedby="patientSearchDesc" autocomplete="off"
+             class="w-full md:w-64 rounded-full border-2 border-white bg-white/90 pl-4 pr-10 py-2 text-slate-900 font-medium placeholder-slate-400 shadow-md focus:outline-none focus:ring-4 focus:ring-cyan-300 transition" />
+      <button id="patientSearchClear" aria-label="Clear search"
+        class="absolute right-2 top-1/2 -translate-y-1/2 text-cyan-600 hover:text-cyan-800 focus:outline-none text-xl leading-none font-bold select-none hidden">&times;</button>
+      <div id="patientSearchDesc" class="sr-only">Type patient ID (e.g. P123ABC) to search medical history and reservations</div>
+    </div>
+  </header>
+
+  <!-- Main content container -->
+  <main class="max-w-5xl mx-auto w-full p-6 flex-grow space-y-12">
+
+    <!-- Reserve Bed Section -->
+    <section id="sectionReserveBed" tabindex="-1" aria-label="Reserve a hospital bed section" class="space-y-6">
+      <h1 class="text-4xl font-extrabold text-cyan-700 drop-shadow-md">Reserve a Bed</h1>
+      <p class="text-cyan-600 max-w-xl">Reserve a bed by selecting destination hospital and providing patient details.</p>
+
+      <form id="reserveBedForm" aria-describedby="reserveBedDesc" class="bg-white rounded-3xl p-8 shadow-xl space-y-8">
+        <fieldset class="space-y-2 max-w-md">
+          <label for="patientIdReserve" class="block text-cyan-800 font-semibold text-lg">Patient ID (auto-generated if empty)</label>
+          <input type="text" id="patientIdReserve" placeholder="Optional: Enter existing or new patient ID"
+                 aria-describedby="patientIdReserveDesc"
+                 autocomplete="off"
+                 class="w-full rounded-xl border border-cyan-300 p-3 text-lg placeholder-cyan-400 shadow-inner focus:outline-none focus:ring-4 focus:ring-cyan-300" />
+          <small id="patientIdReserveDesc" class="text-cyan-500 italic select-none">Leave blank to generate unique Patient ID.</small>
+        </fieldset>
+
+        <fieldset class="space-y-2 max-w-md">
+          <label for="destinationHospital" class="block text-cyan-800 font-semibold text-lg">Destination Hospital</label>
+          <select id="destinationHospital" required aria-required="true" aria-describedby="destinationHospitalDesc"
+            class="w-full rounded-xl border border-cyan-300 p-3 text-lg shadow-inner focus:outline-none focus:ring-4 focus:ring-cyan-300">
+            <option value="" disabled selected>Select hospital</option>
+            <option>City General Hospital</option>
+            <option>Sunrise Medical Center</option>
+            <option>Green Valley Hospital</option>
+            <option>Lakeview Health</option>
+            <option>Central Care Clinic</option>
+          </select>
+          <small id="destinationHospitalDesc" class="text-cyan-500 italic select-none">Choose the hospital where bed is reserved.</small>
+        </fieldset>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl">
+          <fieldset class="space-y-2">
+            <label for="patientName" class="block text-cyan-800 font-semibold text-lg">Patient Full Name</label>
+            <input type="text" id="patientName" required aria-required="true" placeholder="John Doe"
+                   autocomplete="off"
+                   class="w-full rounded-xl border border-cyan-300 p-3 text-lg shadow-inner focus:outline-none focus:ring-4 focus:ring-cyan-300" />
+          </fieldset>
+
+          <fieldset class="space-y-2">
+            <label for="patientAge" class="block text-cyan-800 font-semibold text-lg">Patient Age</label>
+            <input type="text" id="patientAge" required aria-required="true" pattern="\\d+" placeholder="e.g. 34"
+                   inputmode="numeric" autocomplete="off"
+                   class="w-full rounded-xl border border-cyan-300 p-3 text-lg shadow-inner focus:outline-none focus:ring-4 focus:ring-cyan-300" />
+          </fieldset>
+
+          <fieldset class="space-y-2">
+            <label for="patientContact" class="block text-cyan-800 font-semibold text-lg">Contact Number</label>
+            <input type="text" id="patientContact" required aria-required="true" pattern="\\+?\\d{7,15}" placeholder="+1234567890"
+                   inputmode="tel" autocomplete="off"
+                   class="w-full rounded-xl border border-cyan-300 p-3 text-lg shadow-inner focus:outline-none focus:ring-4 focus:ring-cyan-300" />
+          </fieldset>
+        </div>
+
+        <fieldset class="space-y-2 max-w-md">
+          <label for="bedType" class="block text-cyan-800 font-semibold text-lg">Bed Type</label>
+          <select id="bedType" required aria-required="true"
+            class="w-full rounded-xl border border-cyan-300 p-3 text-lg shadow-inner focus:outline-none focus:ring-4 focus:ring-cyan-300">
+            <option value="" disabled selected>Select bed type</option>
+            <option>General Ward</option>
+            <option>ICU</option>
+            <option>Private Room</option>
+            <option>Semi-Private Room</option>
+          </select>
+        </fieldset>
+
+        <button type="submit" aria-label="Submit Bed Reservation" class="btn-primary mx-auto block">
+          Reserve Bed
+          <span class="material-icons">event_available</span>
+        </button>
+        <p id="reservationStatus" role="alert" class="text-center font-semibold mt-2"></p>
+      </form>
+    </section>
+
+    <!-- Patient History Section -->
+    <section id="sectionPatientHistory" tabindex="-1" aria-label="Patient medical history management" hidden class="space-y-8 max-w-5xl mx-auto">
+  <h1 class="text-4xl font-extrabold text-cyan-700 drop-shadow-md">Patient History</h1>
+  <p class="text-cyan-600 max-w-xl">Add and visualize medical history entries for a patient in a flowchart timeline format.</p>
+
+  <form id="patientHistoryForm" aria-describedby="patientHistoryDesc" class="bg-white rounded-3xl p-8 shadow-xl space-y-8">
+    <p id="patientHistoryDesc" class="text-cyan-600 italic">Add medical history entries for the patient by Patient ID or Name.</p>
+
+    <fieldset class="space-y-2 max-w-md">
+      <label for="patientIdHistory" class="block text-cyan-800 font-semibold text-lg">Patient ID</label>
+      <input type="text" id="patientIdHistory" placeholder="Enter Patient ID" autocomplete="off"
+             class="w-full rounded-xl border border-cyan-300 p-3 text-lg shadow-inner focus:outline-none focus:ring-4 focus:ring-cyan-300" />
+    </fieldset>
+
+    <fieldset class="space-y-2 max-w-md">
+      <label for="patientNameHistory" class="block text-cyan-800 font-semibold text-lg">Patient Name</label>
+      <input type="text" id="patientNameHistory" placeholder="Enter Patient Name" autocomplete="off"
+             class="w-full rounded-xl border border-cyan-300 p-3 text-lg shadow-inner focus:outline-none focus:ring-4 focus:ring-cyan-300" />
+    </fieldset>
+
+    <fieldset class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-lg">
+      <div class="space-y-2">
+        <label for="historyDate" class="block text-cyan-800 font-semibold text-lg">Date of Entry</label>
+        <input type="date" id="historyDate" required aria-required="true"
+               class="rounded-xl border border-cyan-300 p-3 text-lg shadow-inner focus:outline-none focus:ring-4 focus:ring-cyan-300" />
+      </div>
+
+      <div class="space-y-2">
+        <label for="historySummary" class="block text-cyan-800 font-semibold text-lg">Summary</label>
+        <input type="text" id="historySummary" required aria-required="true" placeholder="Brief description"
+               class="rounded-xl border border-cyan-300 p-3 text-lg shadow-inner focus:outline-none focus:ring-4 focus:ring-cyan-300" />
+      </div>
+    </fieldset>
+
+    <fieldset class="max-w-3xl space-y-2">
+      <label for="historyDetails" class="block text-cyan-800 font-semibold text-lg">Details</label>
+      <textarea id="historyDetails" rows="4" placeholder="Full details of medical event or treatment" required aria-required="true"
+        class="w-full rounded-xl border border-cyan-300 p-4 text-lg shadow-inner focus:outline-none focus:ring-4 focus:ring-cyan-300 resize-y scrollbar-thin"></textarea>
+    </fieldset>
+
+    <button type="submit" aria-label="Add Medical History Entry" class="btn-primary mx-auto block">
+      Add Entry
+      <span class="material-icons">add_circle_outline</span>
+    </button>
+    <p id="historyStatus" role="alert" class="text-center font-semibold mt-2"></p>
+  </form>
+
+  <h2 class="text-3xl font-bold text-cyan-700 tracking-wide">History Records for Patient ID: <span id="historyPatientIdDisplay" class="text-cyan-900"></span></h2>
+
+  <!-- Flowchart-Styled Timeline -->
+  <div class="relative flex flex-col sm:flex-row sm:space-x-8 items-start sm:items-stretch">
+    <div aria-hidden="true" class="hidden sm:block w-1 bg-gradient-to-b from-cyan-500 to-cyan-800 rounded-full self-stretch"></div>
+    <ul id="historyList" class="space-y-20 flex-1" aria-live="polite" aria-relevant="additions removals" aria-label="List of patient medical history entries">
+      <!-- Dynamic flowchart timeline items appear here -->
+    </ul>
+  </div>
+</section>
+
+
+    <!-- Hospitals Section -->
+    <section id="sectionHospitalsSection" tabindex="-1" aria-label="Hospitals information section" hidden class="space-y-8 max-w-7xl mx-auto p-4">
+      <h1 class="text-4xl font-extrabold text-cyan-700 drop-shadow-lg text-center mb-8">Hospitals Directory</h1>
+
+      <!-- Filters -->
+      <div class="flex flex-wrap justify-center gap-4 mb-6">
+        <select id="hospitalSpecialtyFilter" aria-label="Filter hospitals by doctor specialty" class="border border-gray-300 rounded-lg p-3 min-w-[180px]">
+          <option value="all">No Filter (Specialty)</option>
+          <option value="Cardiology">Cardiology</option>
+          <option value="Neurology">Neurology</option>
+          <option value="Orthopedics">Orthopedics</option>
+          <option value="General Surgery">General Surgery</option>
+          <option value="Pediatrics">Pediatrics</option>
+          <option value="Internal Medicine">Internal Medicine</option>
+          <option value="Dermatology">Dermatology</option>
+          <option value="Family Medicine">Family Medicine</option>
+          <option value="Gynecology">Gynecology</option>
+        </select>
+        <select id="hospitalCityFilter" aria-label="Filter hospitals by city" class="border border-gray-300 rounded-lg p-3 min-w-[180px]">
+          <option value="all">No Filter (City)</option>
+          <option value="New York">New York</option>
+          <option value="Los Angeles">Los Angeles</option>
+          <option value="Chicago">Chicago</option>
+          <option value="Seattle">Seattle</option>
+          <option value="Austin">Austin</option>
+          <option value="Miami">Miami</option>
+        </select>
+        <button id="hospitalApplyFiltersBtn" class="bg-cyan-600 text-white rounded-lg px-5 py-2 hover:bg-cyan-700 transition focus:outline-none focus:ring-4 focus:ring-cyan-400">Apply Filters</button>
+        <button id="hospitalClearFiltersBtn" class="bg-gray-300 text-gray-700 rounded-lg px-5 py-2 hover:bg-gray-400 transition focus:outline-none focus:ring-4 focus:ring-gray-400">Clear Filters</button>
+      </div>
+
+      <!-- Hospitals Cards Grid -->
+      <div id="hospitalsGrid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8 transition-opacity duration-300 ease-in-out opacity-100">
+        <!-- Cards inserted dynamically -->
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-gray-800 text-white text-center p-6 mt-16">
+    <p>&copy; 2023 Janswathya. All rights reserved.</p>
+  </footer>
+
+  <script>
+    (() => {
+      // --- Navigation Tabs and Section Show/Hide ---
+      const tabs = {
+        navReserveBed: document.getElementById('navReserveBed'),
+        navPatientHistory: document.getElementById('navPatientHistory'),
+        navMedicalJourney: document.getElementById('navMedicalJourney'),
+        navHospitalsSection: document.getElementById('navHospitalsSection'),
+      };
+
+      const sections = {
+        sectionReserveBed: document.getElementById('sectionReserveBed'),
+        sectionPatientHistory: document.getElementById('sectionPatientHistory'),
+        sectionMedicalJourney: document.getElementById('sectionMedicalJourney'),
+        sectionHospitalsSection: document.getElementById('sectionHospitalsSection'),
+      };
+
+      const patientSearchContainer = document.getElementById('patientSearchContainer');
+
+      function activateSection(activeSectionId) {
+        Object.entries(sections).forEach(([key, section]) => {
+          if (key === activeSectionId) {
+            section.hidden = false;
+            section.focus();
+          } else {
+            section.hidden = true;
+          }
+        });
+
+        Object.entries(tabs).forEach(([key, tab]) => {
+          if (key.replace('nav', 'section') === activeSectionId) {
+            tab.classList.add('active');
+            tab.setAttribute('aria-selected', 'true');
+          } else {
+            tab.classList.remove('active');
+            tab.setAttribute('aria-selected', 'false');
+          }
+        });
+
+        // Show patient search only on patient-centric pages (ReserveBed, PatientHistory, MedicalJourney)
+        if(['sectionReserveBed', 'sectionPatientHistory', 'sectionMedicalJourney'].includes(activeSectionId)) {
+          patientSearchContainer.classList.remove('hidden');
+        } else {
+          patientSearchContainer.classList.add('hidden');
+        }
+      }
+
+      Object.entries(tabs).forEach(([key, tab]) => {
+        tab.addEventListener('click', () => {
+          activateSection(key.replace('nav', 'section'));
+        });
+      });
+
+      // Initialize default
+      activateSection('sectionReserveBed');
+
+      // --- Patient Search Functionality ---
+
+      const patientSearchInput = document.getElementById('patientSearchInput');
+      const patientSearchClear = document.getElementById('patientSearchClear');
+
+      // Data keys and structures
+      const STORAGE_KEY_PATIENTS = 'hospitalPatientsData';
+
+      function loadPatientsData() {
+        const saved = localStorage.getItem(STORAGE_KEY_PATIENTS);
+        if (!saved) return {};
+        try {
+          return JSON.parse(saved);
+        } catch {
+          return {};
+        }
+      }
+
+      function savePatientsData(data) {
+        localStorage.setItem(STORAGE_KEY_PATIENTS, JSON.stringify(data));
+      }
+
+      function setSelectedPatientId(patientId) {
+        const patientIdHistoryInput = document.getElementById('patientIdHistory');
+        const historyStatus = document.getElementById('historyStatus');
+        const reservationStatus = document.getElementById('reservationStatus');
+
+        if(patientId) {
+          patientIdHistoryInput.value = patientId;
+          historyStatus.textContent = '';
+          reservationStatus.textContent = '';
+          renderHistory(patientId);
+          renderTimeline(patientId);
+        } else {
+          patientIdHistoryInput.value = '';
+          historyStatus.textContent = '';
+          reservationStatus.textContent = '';
+          clearPatientHistoryList();
+          clearTimelineList();
+        }
+      }
+
+      function clearPatientHistoryList() {
+        const historyList = document.getElementById('historyList');
+        const historyPatientIdDisplay = document.getElementById('historyPatientIdDisplay');
+        historyList.innerHTML = '<li class="text-cyan-400 italic select-none">No patient selected or medical history to display.</li>';
+        historyPatientIdDisplay.textContent = 'None';
+      }
+
+      function clearTimelineList() {
+        const timelineList = document.getElementById('timelineList');
+        const timelinePatientIdDisplay = document.getElementById('timelinePatientIdDisplay');
+        timelineList.innerHTML = '<li class="text-cyan-400 italic select-none">No patient selected or timeline data to display.</li>';
+        timelinePatientIdDisplay.textContent = 'None';
+      }
+
+      function renderHistory(patientId) {
+        const patients = loadPatientsData();
+        const patient = patients[patientId];
+        const historyList = document.getElementById('historyList');
+        const historyPatientIdDisplay = document.getElementById('historyPatientIdDisplay');
+
+        if (!patient || !patient.history || patient.history.length === 0) {
+          historyList.innerHTML = '<li class="text-cyan-400 italic select-none">No medical history entries available.</li>';
+          historyPatientIdDisplay.textContent = patientId || 'None';
+          return;
+        }
+        const sorted = [...patient.history].sort((a,b) => new Date(a.date) - new Date(b.date));
+        historyList.innerHTML = '';
+
+        sorted.forEach((entry, idx) => {
+          const li = document.createElement('li');
+          li.tabIndex = 0;
+          li.setAttribute('aria-label', `Medical history entry dated ${entry.date} summary: ${entry.summary}`);
+          li.className = "relative flex flex-col md:flex-row md:items-center gap-6";
+
+          const dot = document.createElement('span');
+          dot.className = `flex-shrink-0 w-8 h-8 rounded-full border-4 border-cyan-600 bg-gradient-to-br from-cyan-300 to-cyan-500 shadow-lg translate-y-1`;
+          dot.setAttribute('aria-hidden', 'true');
+
+          if(idx !== sorted.length - 1){
+            const line = document.createElement('span');
+            line.className = "absolute left-3 top-8 md:top-auto md:left-7 md:h-full md:w-1 bg-gradient-to-b from-cyan-300 to-cyan-500";
+            li.appendChild(line);
+          }
+
+          const card = document.createElement('div');
+          card.className = "bg-white rounded-3xl p-6 shadow-xl flex-1 hover:shadow-cyan-400/50 transition-shadow";
+
+          const dateEl = document.createElement('h3');
+          dateEl.className = "text-cyan-700 font-semibold text-lg mb-2";
+          dateEl.textContent = new Date(entry.date).toLocaleDateString(undefined, {year:'numeric', month:'short', day:'numeric'});
+
+          const summaryEl = document.createElement('h4');
+          summaryEl.className = "text-2xl font-extrabold text-cyan-900 mb-3 select-text";
+          summaryEl.textContent = entry.summary;
+
+          const detailsEl = document.createElement('p');
+          detailsEl.className = "text-slate-700 whitespace-pre-wrap max-h-48 overflow-auto scrollbar-thin scrollbar-thumb-cyan-400 scrollbar-track-cyan-50";
+          detailsEl.textContent = entry.details;
+
+          card.appendChild(dateEl);
+          card.appendChild(summaryEl);
+          card.appendChild(detailsEl);
+
+          li.appendChild(dot);
+          li.appendChild(card);
+
+          historyList.appendChild(li);
+        });
+
+        historyPatientIdDisplay.textContent = patientId || 'None';
+      }
+
+      function renderTimeline(patientId) {
+        const patients = loadPatientsData();
+        const patient = patients[patientId];
+        const timelineList = document.getElementById('timelineList');
+        const timelinePatientIdDisplay = document.getElementById('timelinePatientIdDisplay');
+
+        if (!patient || !patient.history || patient.history.length === 0) {
+          timelineList.innerHTML = '<li class="text-cyan-400 italic select-none">No medical history entries available for timeline.</li>';
+          timelinePatientIdDisplay.textContent = patientId || 'None';
+          return;
+        }
+        const sorted = [...patient.history].sort((a,b) => new Date(a.date) - new Date(b.date));
+        timelineList.innerHTML = '';
+        sorted.forEach(entry => {
+          const li = document.createElement('li');
+          li.className = 'relative pl-6 pb-12 last:pb-4';
+          li.tabIndex = 0;
+          li.setAttribute('aria-label', `Medical journey event on ${entry.date} summary: ${entry.summary}`);
+
+          const node = document.createElement('span');
+          node.className = 'absolute left-0 top-4 w-5 h-5 bg-cyan-600 rounded-full shadow-lg';
+          li.appendChild(node);
+
+          const dateEl = document.createElement('div');
+          dateEl.className = 'text-cyan-700 font-semibold mb-2 select-text';
+          dateEl.textContent = new Date(entry.date).toLocaleDateString(undefined, {year:'numeric', month:'short', day:'numeric'});
+
+          const summaryEl = document.createElement('h3');
+          summaryEl.className = 'font-extrabold text-xl text-cyan-900 select-text mb-1';
+          summaryEl.textContent = entry.summary;
+
+          const detailsEl = document.createElement('p');
+          detailsEl.className = 'text-slate-700 whitespace-pre-wrap max-h-40 overflow-auto scrollbar-thin scrollbar-thumb-cyan-400 scrollbar-track-cyan-100';
+          detailsEl.textContent = entry.details;
+
+          li.appendChild(dateEl);
+          li.appendChild(summaryEl);
+          li.appendChild(detailsEl);
+
+          timelineList.appendChild(li);
+        });
+        timelinePatientIdDisplay.textContent = patientId || 'None';
+      }
+
+      // --- Bed Reservation Form Logic ---
+      const reserveBedForm = document.getElementById('reserveBedForm');
+      const reservationStatus = document.getElementById('reservationStatus');
+
+      function generatePatientId() {
+        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+        let id = 'P';
+        for(let i=0; i<6; i++) {
+          id += chars.charAt(Math.floor(Math.random()*chars.length));
+        }
+        return id;
+      }
+
+      function addOrUpdatePatientReservation(patientId, reservation) {
+        const patients = loadPatientsData();
+        if (!patients[patientId]) {
+          patients[patientId] = { history: [], reservation };
+        } else {
+          patients[patientId].reservation = reservation;
+        }
+        savePatientsData(patients);
+      }
+
+      reserveBedForm.addEventListener('submit', e => {
+        e.preventDefault();
+        reservationStatus.textContent = '';
+        let patientId = document.getElementById('patientIdReserve').value.trim().toUpperCase();
+        if(patientId === '') {
+          patientId = generatePatientId();
+        } else {
+          if(!/^P[A-Z0-9]{6}$/.test(patientId)) {
+            reservationStatus.textContent = 'Patient ID must start with P and be followed by 6 alphanumeric characters.';
+            reservationStatus.className = 'text-red-600 font-semibold mt-2 text-center';
+            return;
+          }
+        }
+
+        const destinationHospital = document.getElementById('destinationHospital').value;
+        const patientName = document.getElementById('patientName').value.trim();
+        const patientAge = document.getElementById('patientAge').value.trim();
+        const patientContact = document.getElementById('patientContact').value.trim();
+        const bedType = document.getElementById('bedType').value;
+
+        if(!destinationHospital || !patientName || !patientAge || isNaN(patientAge) || !patientContact || !bedType) {
+          reservationStatus.textContent = 'Please fill all fields correctly.';
+          reservationStatus.className = 'text-red-600 font-semibold mt-2 text-center';
+          return;
+        }
+
+        const reservation = {
+          destinationHospital,
+          patientName,
+          patientAge,
+          patientContact,
+          bedType,
+          reservedAt: new Date().toISOString()
+        };
+
+        addOrUpdatePatientReservation(patientId, reservation);
+        reservationStatus.textContent = `Bed reserved successfully at ${destinationHospital} for ${patientName}. Patient ID: ${patientId}`;
+        reservationStatus.className = 'text-green-700 font-semibold mt-2 text-center';
+
+        reserveBedForm.reset();
+        document.getElementById('patientIdReserve').value = patientId;
+        setSelectedPatientId(patientId);
+      });
+
+      // --- Patient History Form Logic ---
+      const historyForm = document.getElementById('patientHistoryForm');
+      const historyStatus = document.getElementById('historyStatus');
+
+      function addPatientHistory(patientId, entry) {
+        const patients = loadPatientsData();
+        if (!patients[patientId]) {
+          patients[patientId] = { history: [], reservation: null };
+        }
+        if (!patients[patientId].history) patients[patientId].history = [];
+        patients[patientId].history.push(entry);
+        savePatientsData(patients);
+      }
+
+      historyForm.addEventListener('submit', e => {
+        e.preventDefault();
+        historyStatus.textContent = '';
+
+        const patientId = document.getElementById('patientIdHistory').value.trim().toUpperCase();
+        const date = document.getElementById('historyDate').value;
+        const summary = document.getElementById('historySummary').value.trim();
+        const details = document.getElementById('historyDetails').value.trim();
+
+        if(!patientId || !date || !summary || !details) {
+          historyStatus.textContent = 'Please fill all fields correctly including Patient ID.';
+          historyStatus.className = 'text-red-600 font-semibold mt-2 text-center';
+          return;
+        }
+
+        if(!/^P[A-Z0-9]{6}$/.test(patientId)) {
+          historyStatus.textContent = 'Patient ID format invalid. It should start with P followed by 6 letters or numbers.';
+          historyStatus.className = 'text-red-600 font-semibold mt-2 text-center';
+          return;
+        }
+
+        const patients = loadPatientsData();
+        if(!patients[patientId]) {
+          historyStatus.textContent = 'No reservation found for this Patient ID. Reserve a bed first.';
+          historyStatus.className = 'text-red-600 font-semibold mt-2 text-center';
+          return;
+        }
+
+        addPatientHistory(patientId, { date, summary, details });
+        renderHistory(patientId);
+        renderTimeline(patientId);
+
+        historyForm.reset();
+        document.getElementById('patientIdHistory').value = patientId;
+
+        historyStatus.textContent = 'Medical history entry added successfully.';
+        historyStatus.className = 'text-green-700 font-semibold mt-2 text-center';
+
+        setSelectedPatientId(patientId);
+      });
+
+      // --- Patient Search ---
+      patientSearchInput.addEventListener('input', () => {
+        const query = patientSearchInput.value.trim().toUpperCase();
+        if (!query || !/^P[A-Z0-9]{6}$/.test(query)) {
+          patientSearchClear.classList.add('hidden');
+          setSelectedPatientId(null);
+          return;
+        }
+        patientSearchClear.classList.remove('hidden');
+
+        const patients = loadPatientsData();
+        if (patients[query]) {
+          setSelectedPatientId(query);
+          activateSection('sectionPatientHistory');
+        } else {
+          setSelectedPatientId(null);
+        }
+      });
+
+      patientSearchClear.addEventListener('click', () => {
+        patientSearchInput.value = '';
+        setSelectedPatientId(null);
+        patientSearchClear.classList.add('hidden');
+      });
+
+      // --- Hospitals Section Logic ---
+      const hospitalsGrid = document.getElementById('hospitalsGrid');
+      const hospitalSpecialtyFilter = document.getElementById('hospitalSpecialtyFilter');
+      const hospitalCityFilter = document.getElementById('hospitalCityFilter');
+      const hospitalApplyFiltersBtn = document.getElementById('hospitalApplyFiltersBtn');
+      const hospitalClearFiltersBtn = document.getElementById('hospitalClearFiltersBtn');
+
+      // Simulate backend hospital data (dummy but realistic)
+      const hospitalsData = [
+        {
+          id: 'city-general',
+          name: "City General Hospital",
+          city: "New York",
+          specialties: ["Cardiology", "Neurology"],
+          address: "123 Main St, New York, NY",
+          phone: "(123) 456-7890",
+          doctors: [
+            { name: "Dr. John Smith", specialty: "Cardiology" },
+            { name: "Dr. Jane Doe", specialty: "Neurology" }
+          ],
+          review: "Excellent care and friendly staff!"
+        },
+        {
+          id: 'sunrise-med',
+          name: "Sunrise Medical Center",
+          city: "Los Angeles",
+          specialties: ["Orthopedics", "General Surgery"],
+          address: "456 Elm St, Los Angeles, CA",
+          phone: "(987) 654-3210",
+          doctors: [
+            { name: "Dr. Emily White", specialty: "Orthopedics" },
+            { name: "Dr. Mark Brown", specialty: "General Surgery" }
+          ],
+          review: "Great experience, highly recommend!"
+        },
+        {
+          id: 'green-valley',
+          name: "Green Valley Hospital",
+          city: "Chicago",
+          specialties: ["Pediatrics", "Internal Medicine"],
+          address: "789 Oak St, Chicago, IL",
+          phone: "(555) 123-4567",
+          doctors: [
+            { name: "Dr. Sarah Johnson", specialty: "Pediatrics" },
+            { name: "Dr. David Lee", specialty: "Internal Medicine" }
+          ],
+          review: "The staff was very helpful and caring."
+        },
+        {
+          id: 'lakeview-health',
+          name: "Lakeview Health",
+          city: "Seattle",
+          specialties: ["Dermatology", "Family Medicine"],
+          address: "321 Pine St, Seattle, WA",
+          phone: "(444) 555-6666",
+          doctors: [
+            { name: "Dr. Anna Taylor", specialty: "Dermatology" },
+            { name: "Dr. Chris Wilson", specialty: "Family Medicine" }
+          ],
+          review: "Very professional and clean environment."
+        },
+        {
+          id: 'central-care',
+          name: "Central Care Clinic",
+          city: "Austin",
+          specialties: ["Gynecology", "Orthopedics"],
+          address: "654 Maple St, Austin, TX",
+          phone: "(222) 333-4444",
+          doctors: [
+            { name: "Dr. Lisa Green", specialty: "Gynecology" },
+            { name: "Dr. Tom Harris", specialty: "Orthopedics" }
+          ],
+          review: "I had a great experience with my treatment."
+        },
+        {
+          id: 'city-hospital',
+          name: "City Hospital",
+          city: "Miami",
+          specialties: ["Cardiology", "Neurology"],
+          address: "987 Birch St, Miami, FL",
+          phone: "(111) 222-3333",
+          doctors: [
+            { name: "Dr. Kevin Brown", specialty: "Cardiology" },
+            { name: "Dr. Rachel Adams", specialty: "Neurology" }
+          ],
+          review: "Excellent service and friendly staff."
+        }
+      ];
+
+      // Function to create a hospital card element
+      function createHospitalCard(hospital) {
+        const card = document.createElement('div');
+        card.className = 'card bg-white rounded-lg shadow-md p-6 transition-opacity duration-300';
+        card.setAttribute('data-city', hospital.city);
+        card.setAttribute('data-specialties', hospital.specialties.join(','));
+        card.setAttribute('data-id', hospital.id);
+
+        card.innerHTML = /*html*/`
+          <h2 class="text-xl font-semibold mb-1">${hospital.name}</h2>
+          <p class="text-gray-600 mb-1"><strong>Address:</strong> ${hospital.address}</p>
+          <p class="text-gray-600 mb-3"><strong>Phone:</strong> ${hospital.phone}</p>
+          <h3 class="font-bold mb-1">Doctors:</h3>
+          <ul class="list-disc list-inside text-gray-700 mb-3">
+            ${hospital.doctors.map(d =>
+              `<li>${d.name} - ${d.specialty}</li>`
+            ).join('')}
+          </ul>
+          <h3 class="font-bold mb-1">Reviews:</h3>
+          <p class="text-gray-700 italic">${hospital.review}</p>
+          <button class="bg-blue-600 text-white rounded-lg px-4 py-2 mt-5 hover:bg-blue-700 transition w-full focus:outline-none focus:ring-4 focus:ring-blue-400">View Details</button>
+        `;
+        return card;
+      }
+
+      // Render all hospital cards initially
+      function renderHospitals() {
+        hospitalsGrid.innerHTML = '';
+        hospitalsData.forEach(hospital => {
+          hospitalsGrid.appendChild(createHospitalCard(hospital));
+        });
+      }
+
+      // Filter hospital cards dynamically with fade transitions
+      function applyHospitalFilters() {
+        const specialtyFilter = hospitalSpecialtyFilter.value;
+        const cityFilter = hospitalCityFilter.value;
+
+        const cards = hospitalsGrid.querySelectorAll('.card');
+
+        cards.forEach(card => {
+          const cardSpecialties = card.getAttribute('data-specialties').split(',').map(s => s.trim());
+          const cardCity = card.getAttribute('data-city');
+
+          const matchSpecialty = (specialtyFilter === 'all' || specialtyFilter === '' || cardSpecialties.includes(specialtyFilter));
+          const matchCity = (cityFilter === 'all' || cityFilter === '' || cardCity === cityFilter);
+
+          if(matchSpecialty && matchCity) {
+            card.classList.remove('hidden');
+          } else {
+            card.classList.add('hidden');
+          }
+        });
+      }
+
+      hospitalApplyFiltersBtn.addEventListener('click', () => {
+        applyHospitalFilters();
+      });
+      hospitalClearFiltersBtn.addEventListener('click', () => {
+        hospitalSpecialtyFilter.value = 'all';
+        hospitalCityFilter.value = 'all';
+        applyHospitalFilters();
+      });
+
+      // Initialize hospitals grid and filters
+      renderHospitals();
+      applyHospitalFilters();
+
+      // --- Hospital Filters: enhance UX: apply filters on select change ---
+      hospitalSpecialtyFilter.addEventListener('change', applyHospitalFilters);
+      hospitalCityFilter.addEventListener('change', applyHospitalFilters);
+
+      // Additional: Switch to hospitals tab when clicking navHospitalsSection
+      document.getElementById('navHospitalsSection').addEventListener('click', () => {
+        activateSection('sectionHospitalsSection');
+      });
+
+
+      // On page load, show hospitals tab if hash #hospitals-section is present
+      if(window.location.hash === '#hospitals-section') {
+        activateSection('sectionHospitalsSection');
+      }
+    })();
+  </script>
+</body>
+</html>
+

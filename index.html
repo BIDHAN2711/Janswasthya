@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Janswathya | Hospitals</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .hover-card {
+      transition: all 0.3s ease-in-out;
+    }
+    .hover-card:hover {
+      transform: scale(1.05);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
+    }
+  </style>
+</head>
+<body class="bg-gradient-to-br from-cyan-50 to-blue-100 text-slate-900 min-h-screen flex flex-col">
+
+ <!-- Header / Navigation -->
+  <header class="sticky top-0 z-50 bg-gradient-to-r from-cyan-600 to-blue-600 shadow-lg rounded-b-2xl select-none p-4 flex flex-wrap items-center gap-4 justify-between text-white">
+    <a href="#" aria-label="Hospital Bed Reservation Home" class="flex items-center gap-3 shrink-0 font-semibold text-xl md:text-2xl">
+      <img src="logo.jpeg" class="h-20 w-30 rounded-xl shadow-lg object-contain bg-white" />
+      Janswathya
+    </a>
+    <nav role="navigation" aria-label="Main menu" class="flex gap-3 flex-wrap shrink-0">
+      <button id="navReserveBed" aria-controls="sectionReserveBed" aria-selected="true" class="nav-btn px-4 py-2 rounded-full font-semibold bg-white text-cyan-600 shadow-md transition hover:scale-105 hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-cyan-300">Reserve Bed</button>
+      <button id="navPatientHistory" aria-controls="sectionPatientHistory" aria-selected="false" class="nav-btn px-4 py-2 rounded-full font-semibold hover:bg-white hover:text-cyan-600 transition focus:outline-none focus:ring-4 focus:ring-cyan-300">Patient History</button>
+      <a href="index.html" id="navHospitalsSection" aria-controls="sectionHospitalsSection" aria-selected="false" class="nav-btn px-4 py-2 rounded-full font-semibold hover:bg-white hover:text-cyan-600 transition focus:outline-none focus:ring-4 focus:ring-cyan-300"">Hospitals</a>
+    </nav>
+
+    <div id="patientSearchContainer" aria-label="Search patient by ID" class="relative ml-auto max-w-xs w-full md:w-auto flex-shrink-1 hidden">
+      <input id="patientSearchInput" type="text" placeholder="Search by Patient ID" aria-describedby="patientSearchDesc" autocomplete="off"
+             class="w-full md:w-64 rounded-full border-2 border-white bg-white/90 pl-4 pr-10 py-2 text-slate-900 font-medium placeholder-slate-400 shadow-md focus:outline-none focus:ring-4 focus:ring-cyan-300 transition" />
+      <button id="patientSearchClear" aria-label="Clear search"
+        class="absolute right-2 top-1/2 -translate-y-1/2 text-cyan-600 hover:text-cyan-800 focus:outline-none text-xl leading-none font-bold select-none hidden">&times;</button>
+      <div id="patientSearchDesc" class="sr-only">Type patient ID (e.g. P123ABC) to search medical history and reservations</div>
+    </div>
+  </header>
+
+  <!-- Filters -->
+  <section class="max-w-7xl mx-auto mt-6 px-6">
+    <div class="flex flex-wrap gap-4 justify-between">
+      <input type="text" placeholder="Search hospital..." class="w-full md:w-1/3 p-3 rounded border border-gray-300 shadow focus:ring-2 focus:ring-blue-400">
+      <select class="p-3 rounded border border-gray-300 shadow focus:ring-2 focus:ring-blue-400">
+        <option>All Cities</option>
+        <option>Delhi</option>
+        <option>Mumbai</option>
+        <option>Chennai</option>
+        <option>Kolkata</option>
+      </select>
+      <select class="p-3 rounded border border-gray-300 shadow focus:ring-2 focus:ring-green-400">
+        <option>All Specialties</option>
+        <option>Cardiology</option>
+        <option>ENT</option>
+        <option>Orthopedics</option>
+        <option>Dermatology</option>
+      </select>
+    </div>
+  </section>
+
+<!-- Hospital Cards -->
+<section class="max-w-7xl mx-auto px-6 py-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+
+  <!-- 1. Kanpur Medical Centre Private Limited -->
+  <div class="bg-white p-6 rounded-2xl shadow-xl hover-card flex flex-col h-full">
+    <div class="flex-grow">
+      <h2 class="text-2xl font-bold text-blue-700 mb-2">Kanpur Medical Centre Private Limited</h2>
+      <p class="text-gray-600 mb-1">📍 120/500(24, Govind Nagar Rd, Near J.K. Temple, Lajpat Nagar, Narainpurwa, Kanpur, Uttar Pradesh 208005</p>
+      <p class="text-gray-600 mb-1">📞 9876543210</p>
+      <p class="text-gray-500 text-sm mb-3">Specialists: Dr. Rajan Luthra (General Surgeon, Laparoscopic Surgeon & Urologist), Dr. H. S. Chawla (General Physician, Diabetologist)</p>
+    </div>
+    <button class="w-full px-4 py-2 bg-gradient-to-r from-blue-600 to-blue-500 text-white rounded-full font-semibold shadow-md hover:shadow-lg hover:from-blue-700 hover:to-blue-600 transition-all duration-200 transform hover:scale-105">
+      Book Appointment
+    </button>
+  </div>
+
+  <!-- 2. LPS Institute Of Cardiology -->
+  <div class="bg-white p-6 rounded-2xl shadow-xl hover-card flex flex-col h-full">
+    <div class="flex-grow">
+      <h2 class="text-2xl font-bold text-blue-700 mb-2">LPS Institute Of Cardiology</h2>
+      <p class="text-gray-600 mb-1">📍 Near Goal Chauraha, G T Road, Rawatpur, Kanpur-208019</p>
+      <p class="text-gray-600 mb-1">📞 9876543210</p>
+      <p class="text-gray-500 text-sm mb-3">
+        Specialists: Dr. Mohammadullah Raji (Cardiology), Dr. Manoj Kumar Godara (Cardiology)
+      </p>
+    </div>
+    <button class="w-full px-4 py-2 bg-gradient-to-r from-blue-600 to-blue-500 text-white rounded-full font-semibold shadow-md hover:shadow-lg hover:from-blue-700 hover:to-blue-600 transition-all duration-200 transform hover:scale-105">
+      Book Appointment
+    </button>
+  </div>
+
+  <!-- 3. Regency Hospital -->
+  <div class="bg-white p-6 rounded-2xl shadow-xl hover-card flex flex-col h-full">
+    <div class="flex-grow">
+      <h2 class="text-2xl font-bold text-blue-700 mb-2">Regency Hospital</h2>
+      <p class="text-gray-600 mb-1">📍 Sarvodaya Nagar, Kanpur, UP 208005</p>
+      <p class="text-gray-600 mb-1">📞 0512 308 1111</p>
+      <p class="text-gray-500 text-sm mb-3">Specialists:
+        • Dr. Sayed Shahbaz Hasan (General Physician)
+        • Dr. Archana Trivedi & Dr. Shweta Khanna (Gynecology)
+        • Dr. Daksh Gadi (Orthopedics)
+        • Dr. Umesh Dubey (Nephrology)
+      </p>
+    </div>
+    <button class="w-full px-4 py-2 bg-gradient-to-r from-blue-600 to-blue-500 text-white rounded-full font-semibold shadow-md hover:shadow-lg hover:from-blue-700 hover:to-blue-600 transition-all duration-200 transform hover:scale-105">
+      Book Appointment
+    </button>
+  </div>
+
+  <!-- 4. Apollo Spectra Hospital -->
+  <div class="bg-white p-6 rounded-2xl shadow-xl hover-card flex flex-col h-full">
+    <div class="flex-grow">
+      <h2 class="text-2xl font-bold text-blue-700 mb-2">Apollo Spectra Hospital</h2>
+      <p class="text-gray-600 mb-1">📍 Colonelganj area, Kanpur</p>
+      <p class="text-gray-600 mb-1">📞 9876543210</p>
+      <p class="text-gray-500 text-sm mb-3">Dr. Mohd Shahid (Internal Medicine)
+        • Dr. Ashish Mehrotra (General Physician)
+        • Dr. R.P.S. Bhardwaj (Cardiologist)
+        • Dr. Manav Luthra (Orthopedist)
+        • Dr. Mohd Suhel (Laparoscopic Surgeon)
+        • Dr. Sikha Bhargav (Gynecologist)
+        • Dr. Sanjay Borude (Bariatric Surgeon)
+      </p>
+    </div>
+    <button class="w-full px-4 py-2 bg-gradient-to-r from-blue-600 to-blue-500 text-white rounded-full font-semibold shadow-md hover:shadow-lg hover:from-blue-700 hover:to-blue-600 transition-all duration-200 transform hover:scale-105">
+      Book Appointment
+    </button>
+  </div>
+
+  <!-- 5. Krishna Super Speciality Hospital (KSSH) -->
+  <div class="bg-white p-6 rounded-2xl shadow-xl hover-card flex flex-col h-full">
+    <div class="flex-grow">
+      <h2 class="text-2xl font-bold text-blue-700 mb-2">Krishna Super Speciality Hospital (KSSH)</h2>
+      <p class="text-gray-600 mb-1">📍 Near Ghanta Ghar, Kanpur</p>
+      <p class="text-gray-600 mb-1">📞 Not listed (Recommends contacting directly)</p>
+      <p class="text-gray-500 text-sm mb-3">Specialists: General Medicine, Surgery, Cardiology, Neurology, Orthopedics, Pediatrics, Nephrology, Obstetrics, Critical Care
+      </p>
+    </div>
+    <button class="w-full px-4 py-2 bg-gradient-to-r from-blue-600 to-blue-500 text-white rounded-full font-semibold shadow-md hover:shadow-lg hover:from-blue-700 hover:to-blue-600 transition-all duration-200 transform hover:scale-105">
+      Book Appointment
+    </button>
+  </div>
+
+  <!-- 6. Lps Institute Of Cardiology (Duplicate 1) -->
+  <div class="bg-white p-6 rounded-2xl shadow-xl hover-card flex flex-col h-full">
+    <div class="flex-grow">
+      <h2 class="text-2xl font-bold text-blue-700 mb-2">Lps Institute Of Cardiology</h2>
+      <p class="text-gray-600 mb-1">📍 Near Goal Chauraha, G T Road, Rawatpur, Kanpur-208019</p>
+      <p class="text-gray-600 mb-1">📞 9876543210</p>
+      <p class="text-gray-500 text-sm mb-3">Specialists:Dr. Mohammadullah Raji	 D.M. (Cardiology)	 Senior Resident IIIrd
+        Dr. Manoj Kumar Godara	 D.M. (Cardiology)	 Senior Resident IIIrd
+      </p>
+    </div>
+    <button class="w-full px-4 py-2 bg-gradient-to-r from-blue-600 to-blue-500 text-white rounded-full font-semibold shadow-md hover:shadow-lg hover:from-blue-700 hover:to-blue-600 transition-all duration-200 transform hover:scale-105">
+      Book Appointment
+    </button>
+  </div>
+
+  <!-- 7. Lps Institute Of Cardiology (Duplicate 2) -->
+  <div class="bg-white p-6 rounded-2xl shadow-xl hover-card flex flex-col h-full">
+    <div class="flex-grow">
+      <h2 class="text-2xl font-bold text-blue-700 mb-2">Lps Institute Of Cardiology</h2>
+      <p class="text-gray-600 mb-1">📍 Near Goal Chauraha, G T Road, Rawatpur, Kanpur-208019</p>
+      <p class="text-gray-600 mb-1">📞 9876543210</p>
+      <p class="text-gray-500 text-sm mb-3">Specialists:Dr. Mohammadullah Raji	 D.M. (Cardiology)	 Senior Resident IIIrd
+        Dr. Manoj Kumar Godara	 D.M. (Cardiology)	 Senior Resident IIIrd
+      </p>
+    </div>
+    <button class="w-full px-4 py-2 bg-gradient-to-r from-blue-600 to-blue-500 text-white rounded-full font-semibold shadow-md hover:shadow-lg hover:from-blue-700 hover:to-blue-600 transition-all duration-200 transform hover:scale-105">
+      Book Appointment
+    </button>
+  </div>
+
+</section>
+
+
+</body>
+</html>
