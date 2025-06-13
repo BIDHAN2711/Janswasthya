@@ -1,179 +1,83 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Janswathya | Hospitals</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>JanSwathya</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
-    .hover-card {
-      transition: all 0.3s ease-in-out;
-    }
-    .hover-card:hover {
-      transform: scale(1.05);
-      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
+    body {
+      font-family: 'Inter', sans-serif;
     }
   </style>
 </head>
-<body class="bg-gradient-to-br from-cyan-50 to-blue-100 text-slate-900 min-h-screen flex flex-col">
+<body class="bg-white text-gray-900">
 
- <!-- Header / Navigation -->
-  <header class="sticky top-0 z-50 bg-gradient-to-r from-cyan-600 to-blue-600 shadow-lg rounded-b-2xl select-none p-4 flex flex-wrap items-center gap-4 justify-between text-white">
-    <a href="#" aria-label="Hospital Bed Reservation Home" class="flex items-center gap-3 shrink-0 font-semibold text-xl md:text-2xl">
-      <img src="logo.jpeg" class="h-20 w-30 rounded-xl shadow-lg object-contain bg-white" />
-      Janswathya
-    </a>
-    <nav role="navigation" aria-label="Main menu" class="flex gap-3 flex-wrap shrink-0">
-      <button id="navReserveBed" aria-controls="sectionReserveBed" aria-selected="true" class="nav-btn px-4 py-2 rounded-full font-semibold bg-white text-cyan-600 shadow-md transition hover:scale-105 hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-cyan-300">Reserve Bed</button>
-      <button id="navPatientHistory" aria-controls="sectionPatientHistory" aria-selected="false" class="nav-btn px-4 py-2 rounded-full font-semibold hover:bg-white hover:text-cyan-600 transition focus:outline-none focus:ring-4 focus:ring-cyan-300">Patient History</button>
-      <a href="index.html" id="navHospitalsSection" aria-controls="sectionHospitalsSection" aria-selected="false" class="nav-btn px-4 py-2 rounded-full font-semibold hover:bg-white hover:text-cyan-600 transition focus:outline-none focus:ring-4 focus:ring-cyan-300"">Hospitals</a>
+  <!-- Header -->
+  <header class="flex justify-between items-center px-[48px] py-[20px] shadow-md bg-white">
+    <img src="logo.jpeg" alt="JanSwathya Logo" class="h-[60px] w-auto">
+    <nav class="space-x-6">
+      <button class="px-[24px] py-[10px] bg-[#e4f4f1] hover:bg-[#cbe8e2] text-gray-800 rounded-full shadow-md font-semibold text-[15px]">Vision</button>
+      <button class="px-[24px] py-[10px] bg-[#e4f4f1] hover:bg-[#cbe8e2] text-gray-800 rounded-full shadow-md font-semibold text-[15px]">Reserve Bed</button>
+      <button class="px-[24px] py-[10px] bg-[#e4f4f1] hover:bg-[#cbe8e2] text-gray-800 rounded-full shadow-md font-semibold text-[15px]">Hospitals</button>
+      <button class="px-[24px] py-[10px] bg-[#e4f4f1] hover:bg-[#cbe8e2] text-gray-800 rounded-full shadow-md font-semibold text-[15px]">Patient History</button>
     </nav>
-
-    <div id="patientSearchContainer" aria-label="Search patient by ID" class="relative ml-auto max-w-xs w-full md:w-auto flex-shrink-1 hidden">
-      <input id="patientSearchInput" type="text" placeholder="Search by Patient ID" aria-describedby="patientSearchDesc" autocomplete="off"
-             class="w-full md:w-64 rounded-full border-2 border-white bg-white/90 pl-4 pr-10 py-2 text-slate-900 font-medium placeholder-slate-400 shadow-md focus:outline-none focus:ring-4 focus:ring-cyan-300 transition" />
-      <button id="patientSearchClear" aria-label="Clear search"
-        class="absolute right-2 top-1/2 -translate-y-1/2 text-cyan-600 hover:text-cyan-800 focus:outline-none text-xl leading-none font-bold select-none hidden">&times;</button>
-      <div id="patientSearchDesc" class="sr-only">Type patient ID (e.g. P123ABC) to search medical history and reservations</div>
-    </div>
   </header>
 
-  <!-- Filters -->
-  <section class="max-w-7xl mx-auto mt-6 px-6">
-    <div class="flex flex-wrap gap-4 justify-between">
-      <input type="text" placeholder="Search hospital..." class="w-full md:w-1/3 p-3 rounded border border-gray-300 shadow focus:ring-2 focus:ring-blue-400">
-      <select class="p-3 rounded border border-gray-300 shadow focus:ring-2 focus:ring-blue-400">
-        <option>All Cities</option>
-        <option>Delhi</option>
-        <option>Mumbai</option>
-        <option>Chennai</option>
-        <option>Kolkata</option>
-      </select>
-      <select class="p-3 rounded border border-gray-300 shadow focus:ring-2 focus:ring-green-400">
-        <option>All Specialties</option>
-        <option>Cardiology</option>
-        <option>ENT</option>
-        <option>Orthopedics</option>
-        <option>Dermatology</option>
-      </select>
+<!-- Hero Section -->
+<section class="bg-[#e4f8f9] h-[250px] mt-[50px] relative flex flex-col lg:flex-row items-stretch justify-between overflow-hidden">
+  <div class="w-full lg:w-1/2 px-[48px] py-[40px] flex flex-col justify-center z-10">
+    <h1 class="text-[32px] md:text-[38px] font-extrabold text-[#1f3b7d] leading-tight mb-4">
+      Simplifying Health, Amplifying Life
+    </h1>
+    <p class="text-gray-700 text-[16px] leading-relaxed">
+      Book beds, access patient history, browse hospitals, and store diagnoses with one secure digital healthcare platform – JanSwathya.
+    </p>
+  </div>
+
+  <!-- Image at bottom-right with spacing -->
+  <div class="hidden lg:block lg:w-1/2 relative">
+    <img src="Stethoscope.jpg" alt="Stethoscope"
+         class="absolute right-0 bottom-0 h-[250px] w-auto object-cover" />
+  </div>
+</section>
+
+
+
+  <!-- Features Section -->
+  <section class="text-center py-[60px] px-[48px] bg-white">
+    <h2 class="text-[26px] md:text-[32px] font-semibold mb-[40px]">What You Can Do with JanSwathya</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-[30px]">
+      <div class="bg-[#d5f9f6] hover:bg-[#c1ede9] px-[24px] py-[28px] rounded-[20px] shadow-lg transition min-h-[160px]">
+        <h3 class="text-[17px] font-semibold text-[#1f3b7d] mb-[10px]">🛌 Reserve Beds</h3>
+        <p class="text-[13px] text-gray-700 leading-snug">Real-time bed availability and booking to ensure prompt care during emergencies.</p>
+      </div>
+      <div class="bg-[#d5f9f6] hover:bg-[#c1ede9] px-[24px] py-[28px] rounded-[20px] shadow-lg transition min-h-[160px]">
+        <h3 class="text-[17px] font-semibold text-[#1f3b7d] mb-[10px]">📈 Patient History</h3>
+        <p class="text-[13px] text-gray-700 leading-snug">Track patient treatment records and diagnoses anytime, anywhere with privacy ensured.</p>
+      </div>
+      <div class="bg-[#d5f9f6] hover:bg-[#c1ede9] px-[24px] py-[28px] rounded-[20px] shadow-lg transition min-h-[160px]">
+        <h3 class="text-[17px] font-semibold text-[#1f3b7d] mb-[10px]">📝 Hospital Directory</h3>
+        <p class="text-[13px] text-gray-700 leading-snug">Discover verified hospitals, their ratings, and doctor availability easily.</p>
+      </div>
+      <div class="bg-[#d5f9f6] hover:bg-[#c1ede9] px-[24px] py-[28px] rounded-[20px] shadow-lg transition min-h-[160px]">
+        <h3 class="text-[17px] font-semibold text-[#1f3b7d] mb-[10px]">📄 e-Reports</h3>
+        <p class="text-[13px] text-gray-700 leading-snug">Access all your digital health documents – in one secured place. All reports are downloadable anytime.</p>
+      </div>
     </div>
   </section>
 
-<!-- Hospital Cards -->
-<section class="max-w-7xl mx-auto px-6 py-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+  <!-- Privacy Section -->
+  <section class="bg-[#2c387e] text-white text-center py-[40px] px-[32px]">
+    <div class="text-[20px] font-bold mb-[10px]">🔐 Privacy First</div>
+    <p class="text-[14px] mb-[10px]">All data is end-to-end encrypted and stored securely in compliance with medical regulations.</p>
+  </section>
 
-  <!-- 1. Kanpur Medical Centre Private Limited -->
-  <div class="bg-white p-6 rounded-2xl shadow-xl hover-card flex flex-col h-full">
-    <div class="flex-grow">
-      <h2 class="text-2xl font-bold text-blue-700 mb-2">Kanpur Medical Centre Private Limited</h2>
-      <p class="text-gray-600 mb-1">📍 120/500(24, Govind Nagar Rd, Near J.K. Temple, Lajpat Nagar, Narainpurwa, Kanpur, Uttar Pradesh 208005</p>
-      <p class="text-gray-600 mb-1">📞 9876543210</p>
-      <p class="text-gray-500 text-sm mb-3">Specialists: Dr. Rajan Luthra (General Surgeon, Laparoscopic Surgeon & Urologist), Dr. H. S. Chawla (General Physician, Diabetologist)</p>
-    </div>
-    <button class="w-full px-4 py-2 bg-gradient-to-r from-blue-600 to-blue-500 text-white rounded-full font-semibold shadow-md hover:shadow-lg hover:from-blue-700 hover:to-blue-600 transition-all duration-200 transform hover:scale-105">
-      Book Appointment
-    </button>
-  </div>
-
-  <!-- 2. LPS Institute Of Cardiology -->
-  <div class="bg-white p-6 rounded-2xl shadow-xl hover-card flex flex-col h-full">
-    <div class="flex-grow">
-      <h2 class="text-2xl font-bold text-blue-700 mb-2">LPS Institute Of Cardiology</h2>
-      <p class="text-gray-600 mb-1">📍 Near Goal Chauraha, G T Road, Rawatpur, Kanpur-208019</p>
-      <p class="text-gray-600 mb-1">📞 9876543210</p>
-      <p class="text-gray-500 text-sm mb-3">
-        Specialists: Dr. Mohammadullah Raji (Cardiology), Dr. Manoj Kumar Godara (Cardiology)
-      </p>
-    </div>
-    <button class="w-full px-4 py-2 bg-gradient-to-r from-blue-600 to-blue-500 text-white rounded-full font-semibold shadow-md hover:shadow-lg hover:from-blue-700 hover:to-blue-600 transition-all duration-200 transform hover:scale-105">
-      Book Appointment
-    </button>
-  </div>
-
-  <!-- 3. Regency Hospital -->
-  <div class="bg-white p-6 rounded-2xl shadow-xl hover-card flex flex-col h-full">
-    <div class="flex-grow">
-      <h2 class="text-2xl font-bold text-blue-700 mb-2">Regency Hospital</h2>
-      <p class="text-gray-600 mb-1">📍 Sarvodaya Nagar, Kanpur, UP 208005</p>
-      <p class="text-gray-600 mb-1">📞 0512 308 1111</p>
-      <p class="text-gray-500 text-sm mb-3">Specialists:
-        • Dr. Sayed Shahbaz Hasan (General Physician)
-        • Dr. Archana Trivedi & Dr. Shweta Khanna (Gynecology)
-        • Dr. Daksh Gadi (Orthopedics)
-        • Dr. Umesh Dubey (Nephrology)
-      </p>
-    </div>
-    <button class="w-full px-4 py-2 bg-gradient-to-r from-blue-600 to-blue-500 text-white rounded-full font-semibold shadow-md hover:shadow-lg hover:from-blue-700 hover:to-blue-600 transition-all duration-200 transform hover:scale-105">
-      Book Appointment
-    </button>
-  </div>
-
-  <!-- 4. Apollo Spectra Hospital -->
-  <div class="bg-white p-6 rounded-2xl shadow-xl hover-card flex flex-col h-full">
-    <div class="flex-grow">
-      <h2 class="text-2xl font-bold text-blue-700 mb-2">Apollo Spectra Hospital</h2>
-      <p class="text-gray-600 mb-1">📍 Colonelganj area, Kanpur</p>
-      <p class="text-gray-600 mb-1">📞 9876543210</p>
-      <p class="text-gray-500 text-sm mb-3">Dr. Mohd Shahid (Internal Medicine)
-        • Dr. Ashish Mehrotra (General Physician)
-        • Dr. R.P.S. Bhardwaj (Cardiologist)
-        • Dr. Manav Luthra (Orthopedist)
-        • Dr. Mohd Suhel (Laparoscopic Surgeon)
-        • Dr. Sikha Bhargav (Gynecologist)
-        • Dr. Sanjay Borude (Bariatric Surgeon)
-      </p>
-    </div>
-    <button class="w-full px-4 py-2 bg-gradient-to-r from-blue-600 to-blue-500 text-white rounded-full font-semibold shadow-md hover:shadow-lg hover:from-blue-700 hover:to-blue-600 transition-all duration-200 transform hover:scale-105">
-      Book Appointment
-    </button>
-  </div>
-
-  <!-- 5. Krishna Super Speciality Hospital (KSSH) -->
-  <div class="bg-white p-6 rounded-2xl shadow-xl hover-card flex flex-col h-full">
-    <div class="flex-grow">
-      <h2 class="text-2xl font-bold text-blue-700 mb-2">Krishna Super Speciality Hospital (KSSH)</h2>
-      <p class="text-gray-600 mb-1">📍 Near Ghanta Ghar, Kanpur</p>
-      <p class="text-gray-600 mb-1">📞 Not listed (Recommends contacting directly)</p>
-      <p class="text-gray-500 text-sm mb-3">Specialists: General Medicine, Surgery, Cardiology, Neurology, Orthopedics, Pediatrics, Nephrology, Obstetrics, Critical Care
-      </p>
-    </div>
-    <button class="w-full px-4 py-2 bg-gradient-to-r from-blue-600 to-blue-500 text-white rounded-full font-semibold shadow-md hover:shadow-lg hover:from-blue-700 hover:to-blue-600 transition-all duration-200 transform hover:scale-105">
-      Book Appointment
-    </button>
-  </div>
-
-  <!-- 6. Lps Institute Of Cardiology (Duplicate 1) -->
-  <div class="bg-white p-6 rounded-2xl shadow-xl hover-card flex flex-col h-full">
-    <div class="flex-grow">
-      <h2 class="text-2xl font-bold text-blue-700 mb-2">Lps Institute Of Cardiology</h2>
-      <p class="text-gray-600 mb-1">📍 Near Goal Chauraha, G T Road, Rawatpur, Kanpur-208019</p>
-      <p class="text-gray-600 mb-1">📞 9876543210</p>
-      <p class="text-gray-500 text-sm mb-3">Specialists:Dr. Mohammadullah Raji	 D.M. (Cardiology)	 Senior Resident IIIrd
-        Dr. Manoj Kumar Godara	 D.M. (Cardiology)	 Senior Resident IIIrd
-      </p>
-    </div>
-    <button class="w-full px-4 py-2 bg-gradient-to-r from-blue-600 to-blue-500 text-white rounded-full font-semibold shadow-md hover:shadow-lg hover:from-blue-700 hover:to-blue-600 transition-all duration-200 transform hover:scale-105">
-      Book Appointment
-    </button>
-  </div>
-
-  <!-- 7. Lps Institute Of Cardiology (Duplicate 2) -->
-  <div class="bg-white p-6 rounded-2xl shadow-xl hover-card flex flex-col h-full">
-    <div class="flex-grow">
-      <h2 class="text-2xl font-bold text-blue-700 mb-2">Lps Institute Of Cardiology</h2>
-      <p class="text-gray-600 mb-1">📍 Near Goal Chauraha, G T Road, Rawatpur, Kanpur-208019</p>
-      <p class="text-gray-600 mb-1">📞 9876543210</p>
-      <p class="text-gray-500 text-sm mb-3">Specialists:Dr. Mohammadullah Raji	 D.M. (Cardiology)	 Senior Resident IIIrd
-        Dr. Manoj Kumar Godara	 D.M. (Cardiology)	 Senior Resident IIIrd
-      </p>
-    </div>
-    <button class="w-full px-4 py-2 bg-gradient-to-r from-blue-600 to-blue-500 text-white rounded-full font-semibold shadow-md hover:shadow-lg hover:from-blue-700 hover:to-blue-600 transition-all duration-200 transform hover:scale-105">
-      Book Appointment
-    </button>
-  </div>
-
-</section>
-
+  <!-- Footer -->
+  <footer class="bg-[#232d69] text-center text-white text-[14px] py-[16px]">
+    &copy; 2025 JanSwathya. All rights reserved.
+  </footer>
 
 </body>
 </html>
