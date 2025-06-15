@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>JanSwasthya</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="font-sans bg-white text-[#1a1a1a]">
+
+<!-- Navigation Bar -->
+<nav class="flex justify-between items-center px-6 md:px-12 py-4 bg-white shadow-md sticky top-0 z-50">
+  <div class="flex items-center space-x-3">
+    <img src="logo.jpeg" alt="JanSwasthya Logo" class="h-12">
+  </div>
+  <div class="space-x-4">
+    <a href="hospital.html" class="inline-block px-5 py-1.5 text-[#1773b0] border border-[#bde5ea] rounded-full bg-[#e2f5f8] shadow-md transition-all duration-300 hover:bg-[#d0f1f8] hover:shadow-lg hover:text-[#0e5c8c]">
+      Hospitals
+    </a>
+    <a href="patient history system/index.html" class="inline-block px-5 py-1.5 text-[#1773b0] border border-[#bde5ea] rounded-full bg-[#e2f5f8] shadow-md transition-all duration-300 hover:bg-[#d0f1f8] hover:shadow-lg hover:text-[#0e5c8c]">
+      Patient History
+    </a>
+  </div>
+</nav>
+
+<!-- Hero Section (tweaked) -->
+<section class="bg-[#e6fbff] mt-10 pt-15 pb-15    
+                md:flex md:items-center
+                md:pl-20               
+                overflow-hidden">      
+  <!-- Left Content -->
+  <div class="md:w-2/3 text-left mb-10 md:mb-0 px-6">
+    <h1 class="text-4xl md:text-5xl font-bold text-[#1f3b7d] mb-6 leading-tight">
+      Simplifying Health, <br class="hidden md:inline">Amplifying Life
+    </h1>
+    <p class="text-gray-700 text-base md:text-lg max-w-xl">
+      Book beds, access patient history, browse hospitals, and store diagnoses – all through one secure digital healthcare platform: <strong>JanSwasthya</strong>.
+    </p>
+  </div>
+
+  <!-- Right Image – flush with the corner -->
+  <div class="md:w-1/3 h-full flex justify-end items-end m-0 p-0">
+    <img src="Stethoscope.jpg"
+         alt="Healthcare Illustration"
+         class="w-full h-full object-cover m-0 p-0 rounded-none" />
+  </div>
+</section>
+
+<!-- Features Section with Background Video -->
+<section class="relative h-auto py-20 overflow-hidden mb-10 mt-20" id="features" >
+  <video autoplay muted loop playsinline class="absolute inset-0 w-full h-full object-cover z-0">
+    <source src="bed_pic.mp4" type="video/mp4" />
+    Your browser does not support the video tag.
+  </video>
+  <div class="absolute inset-0 bg-white/20 backdrop-blur-sm z-0"></div>
+
+  <div class="relative z-10 text-center px-6">
+    <div class="bg-[#d4f5f9] p-6 rounded-xl shadow-md max-w-xl mx-auto mb-10">
+      <h2 class="text-2xl md:text-3xl font-bold text-[#1f3b7d]">
+        What You Can Do with JanSwasthya
+      </h2>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 justify-center items-start max-w-4xl mx-auto">
+      <a href="patient history system/index.html" class="transform hover:scale-[1.03] transition-all duration-300">
+        <div class="bg-[#d4f5f9] p-6 rounded-xl shadow-md hover:shadow-2xl">
+          <h3 class="text-lg font-semibold text-[#1f3b7d] mb-2">🩺 Patient History</h3>
+          <p class="text-sm text-gray-700">Track patient treatment records and diagnoses anytime, anywhere with privacy ensured.</p>
+        </div>
+      </a>
+      <a href="hospital.html" class="transform hover:scale-[1.03] transition-all duration-300">
+        <div class="bg-[#d4f5f9] p-6 rounded-xl shadow-md hover:shadow-2xl">
+          <h3 class="text-lg font-semibold text-[#1f3b7d] mb-2">🏥 Hospital Directory</h3>
+          <p class="text-sm text-gray-700">Explore verified hospitals near you.Check ratings, services, and real-time bed availability.</p>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- Privacy Section -->
+<section class="bg-[#2e4686] text-white text-center px-6 py-12">
+  <h2 class="text-xl md:text-2xl font-semibold mb-4 flex justify-center items-center gap-2">
+    🔒 Privacy First
+  </h2>
+  <p class="max-w-2xl mx-auto text-base md:text-lg">
+    All data is end-to-end encrypted and stored securely in compliance with medical regulations.
+  </p>
+</section>
+
+<!-- Footer -->
+<footer class="bg-[#1d2e60] text-center text-white py-4">
+  <p>© 2025 JanSwasthya. All rights reserved.</p>
+</footer>
+
+</body>
+</html>
